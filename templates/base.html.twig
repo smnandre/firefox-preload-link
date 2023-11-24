@@ -1,16 +1,61 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Welcome!{% endblock %}</title>
 
-        {% block javascripts %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+
+    <style>
+        {{ include('_style.css.twig') }}
+    </style>
+</head>
+<body style="display: grid;min-height: 100vh;height:100%;grid-template-rows: auto 1fr auto;">
+
+<header>
+    <h1 style="justify-content: center;">Preload: {{ app.request.query.method|default('none') }}</h1>
+</header>
+
+<main style="display: grid; padding: 3rem; align-self: baseline;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; align-items: stretch; justify-items: stretch">
+        <div class="card">
+            <h2><code>{{ 'Link: </styles.css>;rel=preload;as=style' }}</code></h2>
+            <nav style="display: flex; align-items: center; justify-content: center; gap: 2rem;">
+                {% set methods = [
+                    'add_link',
+                    'send_early_hints',
+                    'manual_header',
+                ] %}
+                <a href="{{ url('link_preload') }}">No Link</a>
+                {% for _method in methods %}
+                    <a href="{{ url('link_preload', {method: _method, absolute: false}) }}">{{ _method }}</a>
+                {% endfor %}
+            </nav>
+        </div>
+        <div class="card">
+            <h2><code>{{ 'Link: <https://foobar.wip/styles.css>;rel=preload;as=style'|e }}</code></h2>
+            <nav style="display: flex; align-items: center; justify-content: center; gap: 2rem;">
+                {% set methods = [
+                    'add_link',
+                    'send_early_hints',
+                    'manual_header',
+                ] %}
+                <a href="{{ url('link_preload', {absolute: true}) }}">No Link</a>
+                {% for _method in methods %}
+                    <a href="{{ url('link_preload', {method: _method, absolute: true}) }}">{{ _method }}</a>
+                {% endfor %}
+            </nav>
+        </div>
+        <div class="card">
+            <pre style="white-space: break-spaces;">
+                <code style="color: white;">
+                    {{- app.request -}}
+                </code>
+            </pre>
+        </div>
+    </div>
+</main>
+
+</body>
 </html>
